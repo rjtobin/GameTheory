@@ -1,0 +1,41 @@
+{% extends 'gt/base.html' %}
+
+{% load bootstrap3 %}
+
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% bootstrap_messages %}
+
+{% block title %}
+Game Theory
+{% endblock %}
+
+{% block title_head %}
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container">
+  <div class="jumbotron text-center">
+    <h1>Game Theory</h1>
+    <p>Problems</p>
+  </div>
+
+
+  <h1>Upload</h1>
+
+  {% if user.is_authenticated %}
+
+  <form action="/site/upload/" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Submit" />
+  </form>
+
+  {% endif %}
+  
+</div>
+
+{% endblock %}
+

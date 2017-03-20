@@ -1,0 +1,54 @@
+{% extends 'gt/bootstrap.html' %}
+
+{% load bootstrap3 %}
+
+{% block bootstrap3_content %}
+
+
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">Game Theory</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+	<li class="active"><a href="http://localhost:8000/site/">Home</a></li>
+	<li><a href="">Test 1</a></li>
+	<li><a href="">Test 2</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+	{% if user.is_authenticated %}
+          <li><a> {{ user.username }} </a></li>
+          <li><a href="http://localhost:8000/logout/">Logout</a></li>
+	{% else %}
+          <li><a href="http://localhost:8000/login/">Login</a></li>
+	{% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!--<div class="container">
+  <div class="jumbotron text-center">
+    <h1>Game Theory</h1>
+    <p>Subtext</p>
+  </div>
+</div>-->
+
+ 
+
+<div class="container">
+  <h1>{% block title_head %}{no title}{% endblock %}</h1>
+
+  {% autoescape off %}
+  {% bootstrap_messages %}
+  {% endautoescape %}
+
+  {% block content %}
+  {no content}
+  {% endblock %}
+  
+</div>
+
+{% endblock %}
+

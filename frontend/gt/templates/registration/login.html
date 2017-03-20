@@ -1,0 +1,18 @@
+{% extends 'gt/base.html' %}
+
+{% load bootstrap3 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% bootstrap_messages %}
+
+
+{% block title %}Login{% endblock %}
+{% block title_head %}Login{% endblock %}
+
+{% block content %}
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Login</button>
+</form>
+{% endblock %}

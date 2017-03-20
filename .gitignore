@@ -1,0 +1,10 @@
+
+*~
+*__pycache__*
+\#*\#
+
+frontend/db.sqlite3
+frontend/db.sqlite3.old
+frontend/test.txt
+
+backend_rest/testapp_db.json

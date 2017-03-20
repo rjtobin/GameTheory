@@ -1,0 +1,56 @@
+{% extends 'gt/base.html' %}
+
+{% load bootstrap3 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% bootstrap_messages %}
+
+
+{% block title %}
+{{ problem.problem_title }}
+{% endblock %}
+
+{% block title_head %}
+{{ problem.problem_title }}
+{% endblock %}
+
+{% block content %}
+
+{% if error_message  %}
+<p>
+  <strong>{{ error_message }}</strong>
+</p>
+{% endif %}
+
+{% if submitted %}
+<p>
+  <strong>Thank you for submitting a solution.</strong>
+</p>
+{% endif %}
+
+{% if pending %}
+<p>
+  <strong>Still processing your submission...</strong>
+</p>
+{% endif %}
+
+<p> {{ problem.problem_description }} </p>
+
+{% if user.is_authenticated %}
+<p> Thanks for logging in {{ user.username }}. </p>
+{% if complete %}
+<p>You have already completed this problem. </p>
+{% else %}
+
+  <form action="#" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Submit" />
+  </form>
+
+{% endif %}
+{% else %}
+<p> Please login. </p>
+{% endif %}
+
+{% endblock %}

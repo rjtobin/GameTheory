@@ -1,0 +1,43 @@
+{% extends 'gt/base.html' %}
+
+{% load bootstrap3 %}
+
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% bootstrap_messages %}
+
+{% block title %}
+Game Theory
+{% endblock %}
+
+{% block title_head %}
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container">
+  <div class="jumbotron text-center">
+    <h1>Game Theory</h1>
+    <p>Problems</p>
+  </div>
+
+
+  <h1>Problems</h1>
+
+  {% if problem_list %}
+  <p>
+    <ul>
+      {% for problem in problem_list %}
+      <li><a href="{% url 'gt:problem' problem.id %}">{{ problem.problem_title }}</a></li>
+      {% endfor %}
+    </ul>
+  </p>
+  {% else %}
+  <p>No problems are available.</p>
+  {% endif %}
+
+</div>
+
+{% endblock %}
+
