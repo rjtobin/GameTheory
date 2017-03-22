@@ -77,8 +77,12 @@ def handle_pending(submission):
     request_data = json.loads(request_response.text)
     if request_data['status'] == "Done":
         submission.processed = True
-        if request_data['content'].startswith('Yes'):
+        if request_data['content'].startswith('-1'):
+            submission.correct = False
+            print(request_data['output'])
+        else:
             submission.correct = True
+            print(request_data['output'])
         submission.save()
     print(request_response.text)
     

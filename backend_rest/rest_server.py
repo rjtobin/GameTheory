@@ -66,8 +66,8 @@ class GetStatus(Resource):
         else:
             output_data = ""
             with open("{}/res/output{}".format(store_path,id)) as output_file:
-                output_data = output_file.read()
-            return {'status': 'Done', 'content': output_data}
+                output_data = output_file.read().split("\n")
+            return {'status': 'Done', 'content': output_data[0], 'output': output_data[1]}
     
 api.add_resource(RESTServer, '/')
 api.add_resource(GetStatus, '/status/<id>')
