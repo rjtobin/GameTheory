@@ -22,9 +22,14 @@
 </p>
 {% endif %}
 
-{% if submitted %}
+{% if submitted and success %}
 <p>
   <strong>Thank you for submitting a solution.</strong>
+</p>
+{% elif submitted and not success %}
+<p>
+  <strong>There was a server error while submitting your solution.  Please try
+          again later.  If this problem persists, please report the issue.</strong>
 </p>
 {% endif %}
 

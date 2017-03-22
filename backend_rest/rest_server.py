@@ -6,11 +6,13 @@ import os.path
 from tinydb import TinyDB, where, Query
 
 
+store_path = "../backend_daemon/store"
+
 db = TinyDB('testapp_db.json')
 BIndex = Query()
 results = db.search(BIndex.index_flag == 1)
 if len(results) == 0:
-    db.insert({'index_flag':1, 'biggest_index':1})
+    db.insert({'index_flag':1, 'size':1})
 
 
 app = Flask(__name__)
@@ -39,7 +41,9 @@ class RESTServer(Resource):
     def post(self):
         parse = reqparse.RequestParser()
         parse.add_argument('file', type=werkzeug.datastructures.FileStorage, location='files')
+        parse.add_argument('problem_id',type=int)
         args = parse.parse_args()
+        print(args)
         test_file = args['file']
 
         global biggest_index
@@ -48,20 +52,20 @@ class RESTServer(Resource):
         cur_index = self.get_biggest_index()
         self.increment_biggest_index()
         
-        test_file.save("store/file{}".format(cur_index))
+        test_file.save("{}/file{}_{}".format(store_path,cur_index,args['problem_id']))
         db.insert({'id':cur_index, 'status':0})
         return {'id':cur_index}
 
 
 class GetStatus(Resource):
     def get(self, id):
-        if os.path.isfile("store/file{}".format(id)):
+        if os.path.isfile("{}/file{}".format(store_path,id)):
             return {'status': 'NotDone'}
-        elif not os.path.isfile("store/res/output{}".format(id)):
+        elif not os.path.isfile("{}/res/output{}".format(store_path,id)):
             return {'status': 'DoesNotExist'}
         else:
             output_data = ""
-            with open("store/res/output{}".format(id)) as output_file:
+            with open("{}/res/output{}".format(store_path,id)) as output_file:
                 output_data = output_file.read()
             return {'status': 'Done', 'content': output_data}
     

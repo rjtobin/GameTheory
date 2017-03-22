@@ -38,17 +38,18 @@ def problem(request, problem_id):
     
     if request.method == 'POST':
         form = UploadCodeForm(request.POST, request.FILES)
+        success = False
         if form.is_valid():
-            handle_submission(request.FILES['file'], request.user, problem)
-            return HttpResponseRedirect('/site')
+            success = handle_submission(request.FILES['file'], request.user, problem)
+            #return HttpResponseRedirect('/site')
         else:
             print("invalid for some reason")
         
         return render(request,'gt/problem.html',{'problem':problem, 'complete':complete, 'submitted': True,
-                                                 'pending': pending, 'form': form})
+                                                 'pending': pending, 'form': form, 'success': success})
     else:
         return render(request,'gt/problem.html',{'problem':problem, 'complete':complete, 'submitted': False,
-                                                 'pending': pending, 'form': form})
+                                                 'pending': pending, 'form': form, 'success': True})
 
 def handle_submission(f, user, problem):
     with open('test.txt', 'wb+') as destination:
@@ -56,13 +57,19 @@ def handle_submission(f, user, problem):
             destination.write(chunk)
     eval_server = "http://localhost:5000/"
     upload_files = {'file': open('test.txt', 'rb')}
-    request_response = requests.post(eval_server, files=upload_files)
+
+    try:
+        request_response = requests.post(eval_server, files=upload_files, data={'problem_id':problem.id})
+    except:
+        return False
+    
     request_data = json.loads(request_response.text)
 
     new_submission = Submission(user=user, problem=problem, evaluator_id=request_data['id'],
                                 processed=False, correct=False, submit_time=timezone.now())
     new_submission.save()
     print(request_data['id'])
+    return True
 
 def handle_pending(submission):
     eval_url = "http://localhost:5000/status/{}".format(submission.evaluator_id)
